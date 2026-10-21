@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eine selbst gestaltete Seite über meine Hobbys und Interessen.">
+    <title>Meine Webseite</title>
+    <style>
+        :root {
+            --primary: #2878a8;
+            --background: #f7f6ee;
+            --text: #29343a;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            color: var(--text);
+            background: var(--background);
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        header, footer {
+            padding: 1.5rem;
+            color: white;
+            background: var(--primary);
+            text-align: center;
+        }
+        header h1 { margin: 0; }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: white;
+        }
+        nav a { color: var(--primary); font-weight: 700; }
+        main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+        .karte {
+            margin: 1rem 0;
+            padding: 1.25rem;
+            border: 2px solid #d7e1e5;
+            border-radius: 0.4rem;
+            background: white;
+        }
+        .interessen { display: flex; gap: 1rem; }
+        .interessen .karte { flex: 1; }
+        .seitenbild {
+            display: block;
+            width: 100%;
+            max-height: 360px;
+            margin: 1.5rem 0;
+            border-radius: 0.75rem;
+            object-fit: cover;
+        }
+        a:focus-visible { outline: 3px solid #f0a202; outline-offset: 3px; }
+
+        /* Styling für interaktive Elemente & Baustein 4 */
+        .versteckt {
+            display: none;
+        }
+        .interaktiv-grid {
+            display: grid;
+            gap: 1.25rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            margin-top: 1rem;
+        }
+        .baustein-box {
+            padding: 1rem;
+            background: #fafafa;
+            border-left: 4px solid var(--primary);
+            border-radius: 0.3rem;
+            border: 1px solid #e1e7ea;
+            border-left-width: 4px;
+        }
+        .baustein-box h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .interaktiv-btn {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.55rem 1rem;
+            font-size: 0.95rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .interaktiv-btn:hover {
+            background-color: #1e5c82;
+        }
+        .interaktiv-input {
+            padding: 0.5rem;
+            font-size: 0.95rem;
+            border: 1px solid #ccc;
+            border-radius: 0.3rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 700px) {
+            .interessen { flex-direction: column; }
+            nav { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hi, das ist meine Webseite!</h1>
+        <p>das ist eine aufgabe</p>
+    </header>
+    <nav aria-label="Hauptnavigation">
+        <a href="#hobbys">Hobbys</a>
+        <a href="#ideen">Über die Seite</a>
+        <a href="#interaktiv">Interaktiv</a>
+        <a href="#kontakt">Kontakt</a>
+    </nav>
+    <main>
+        <section class="karte" id="ideen">
+            <h2>Warum ich diese Seite gemacht habe</h2>
+            <p>Das ist eine schulaufgabe</p>
+            <img class="seitenbild" src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" alt="Berge und grüne Wiesen rund um einen See">
+            <p><a href="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" target="_blank" rel="noopener noreferrer">Bild in voller Größe öffnen</a></p>
+        </section>
+        <section id="hobbys">
+            <h2>Was ich gern mache</h2>
+            <p>SPort und für die Schule lernen</p>
+            <div class="interessen">
+                <article class="karte">
+                    <h3>Draußen</h3>
+                    <ul>
+                        <li>Spaziergänge und Wanderungen</li>
+                        <li>Neue Orte entdecken</li>
+                        <li>Die Natur fotografieren</li>
+                    </ul>
+                </article>
+                <article class="karte">
+                    <h3>Sonstiges</h3>
+                    <ul>
+                        <li>Mit eigenen Ideen experimentieren</li>
+                        <li>Musik hören und Neues finden</li>
+                        <li>Kleine digitale Projekte gestalten</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <!-- Interaktive Bausteine mit JavaScript -->
+        <section class="karte" id="interaktiv">
+            <h2>Interaktive JavaScript-Bereiche</h2>
+            <p>Hier kannst du die verschiedenen JavaScript-Bausteine ausprobieren:</p>
+            <div class="interaktiv-grid">
+
+                <!-- Baustein 1: Klick-Reaktion -->
+                <div class="baustein-box">
+                    <h3>Baustein 1: Klick-Reaktion</h3>
+                    <p>Klicke auf den Button, um den Text zu ändern:</p>
+                    <button id="knopf" class="interaktiv-btn">Klick mich!</button>
+                    <p id="ausgabe">Hier erscheint gleich ein Text...</p>
+                </div>
+
+                <!-- Baustein 2: Zähler -->
+                <div class="baustein-box">
+                    <h3>Baustein 2: Zähler</h3>
+                    <p>Zählerstand: <strong id="zaehlerAnzeige">0</strong></p>
+                    <button id="zaehlerKnopf" class="interaktiv-btn">Zähler + 1</button>
+                </div>
+
+                <!-- Baustein 3: Eingabe verarbeiten -->
+                <div class="baustein-box">
+                    <h3>Baustein 3: Eingabe verarbeiten</h3>
+                    <label for="name">Dein Name:</label><br>
+                    <input type="text" id="name" class="interaktiv-input" placeholder="Name eingeben">
+                    <button id="grussKnopf" class="interaktiv-btn">Begrüßen</button>
+                    <p id="begruessung"></p>
+                </div>
+
+                <!-- Baustein 4: Element ein-/ausblenden -->
+                <div class="baustein-box">
+                    <h3>Baustein 4: Element ein-/ausblenden</h3>
+                    <p>Klicke, um eine geheime Info ein- oder auszublenden:</p>
+                    <button id="toggleKnopf" class="interaktiv-btn">Tipp ein-/ausblenden</button>
+                    <p id="geheimerTipp" class="versteckt">💡 Mit JavaScript lassen sich Webseiten interaktiv und dynamisch gestalten!</p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="karte" id="kontakt">
+            <h2>Zum Schluss</h2>
+            <p>Danke fürs Anschauen meiner Webseite! Vielleicht hast du ja auch eines dieser Hobbys. Falls du mir schreiben möchtest, kannst du mir eine E-Mail an <a href="mailto:hallo@example.com">hallo@example.com</a> schicken.</p>
+        </section>
+    </main>
+    <footer>
+        <p>Meine Webseite | Schulprojekt 2026</p>
+    </footer>
+
+    <!-- JavaScript-Code direkt vor </body> -->
+    <script>
+        // Baustein 1: Klick-Reaktion
+        const knopf = document.querySelector("#knopf");
+        const ausgabe = document.querySelector("#ausgabe");
+        knopf.addEventListener("click", function () {
+            ausgabe.textContent = "Super, du hast auf den Knopf geklickt!";
+        });
+
+        // Baustein 2: Zähler
+        let zaehler = 0;
+        const zaehlerKnopf = document.querySelector("#zaehlerKnopf");
+        const zaehlerAnzeige = document.querySelector("#zaehlerAnzeige");
+        zaehlerKnopf.addEventListener("click", function () {
+            zaehler = zaehler + 1;
+            zaehlerAnzeige.textContent = zaehler;
+        });
+
+        // Baustein 3: Eingabe verarbeiten
+        const nameInput = document.querySelector("#name");
+        const grussKnopf = document.querySelector("#grussKnopf");
+        const begruessung = document.querySelector("#begruessung");
+        grussKnopf.addEventListener("click", function () {
+            const eingegebenerName = nameInput.value;
+            if (eingegebenerName.trim() !== "") {
+                begruessung.textContent = "Hallo, " + eingegebenerName + "! Willkommen auf meiner Seite.";
+            } else {
+                begruessung.textContent = "Bitte gib zuerst einen Namen in das Feld ein!";
+            }
+        });
+
+        // Baustein 4: Element ein-/ausblenden
+        const toggleKnopf = document.querySelector("#toggleKnopf");
+        const geheimerTipp = document.querySelector("#geheimerTipp");
+        toggleKnopf.addEventListener("click", function () {
+            geheimerTipp.classList.toggle("versteckt");
+        });
+    </script>
+</body>
+</html>
