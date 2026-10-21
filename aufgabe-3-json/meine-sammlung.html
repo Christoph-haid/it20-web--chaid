@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Sammlung – JSON & Filter</title>
+    <style>
+        :root {
+            --primary: #2878a8;
+            --background: #f7f6ee;
+            --text: #29343a;
+            --card-bg: #ffffff;
+            --border-color: #d7e1e5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem 1rem;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .such-bereich {
+            margin-bottom: 1.5rem;
+        }
+
+        #suche {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        #suche:focus {
+            border-color: var(--primary);
+        }
+
+        .treffer-info {
+            margin: 0.5rem 0 1rem 0;
+            font-size: 0.95rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        #liste {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .karte {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .karte:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .karte h3 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-size: 1.15rem;
+        }
+
+        .karte p {
+            margin: 0.35rem 0;
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #e9f2f8;
+            color: var(--primary);
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .keine-treffer {
+            grid-column: 1 / -1;
+            padding: 2rem;
+            text-align: center;
+            background: white;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            color: #777;
+        }
+
+        .rohdaten-bereich {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .rohdaten-bereich h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        #rohdaten {
+            background-color: #24292e;
+            color: #f6f8fa;
+            padding: 1.25rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Meine Spielesammlung</h1>
+        <p>Eine interaktive Übersicht mit Live-Suche und Anzeige der JSON-Rohdaten.</p>
+
+        <div class="such-bereich">
+            <input id="suche" placeholder="Suchen …">
+            <p id="treffer" class="treffer-info"></p>
+        </div>
+
+        <div id="liste"></div>
+
+        <section class="rohdaten-bereich">
+            <h2>JSON-Rohdaten</h2>
+            <pre id="rohdaten"></pre>
+        </section>
+    </div>
+
+    <script>
+        // Array mit mindestens 5 Einträgen und je mindestens 3 Feldern
+        const daten = [
+            { titel: "Minecraft", kategorie: "Sandbox", bewertung: 9, jahr: 2011 },
+            { titel: "Celeste", kategorie: "Platformer", bewertung: 10, jahr: 2018 },
+            { titel: "The Legend of Zelda: Breath of the Wild", kategorie: "Action-Adventure", bewertung: 10, jahr: 2017 },
+            { titel: "Hollow Knight", kategorie: "Metroidvania", bewertung: 9, jahr: 2017 },
+            { titel: "Portal 2", kategorie: "Puzzle", bewertung: 10, jahr: 2011 },
+            { titel: "Elden Ring", kategorie: "Action-RPG", bewertung: 9, jahr: 2022 }
+        ];
+
+        const listeEl = document.getElementById("liste");
+        const trefferEl = document.getElementById("treffer");
+        const sucheEl = document.getElementById("suche");
+        const rohdatenEl = document.getElementById("rohdaten");
+
+        // Funktion zur Darstellung der Karten im DOM
+        function zeigeListe(eintraege) {
+            listeEl.innerHTML = "";
+
+            if (eintraege.length === 0) {
+                listeEl.innerHTML = '<div class="keine-treffer">Keine passenden Einträge gefunden.</div>';
+            } else {
+                eintraege.forEach(eintrag => {
+                    const karte = document.createElement("div");
+                    karte.className = "karte";
+                    karte.innerHTML = `
+                        <h3>${eintrag.titel}</h3>
+                        <p><span class="badge">${eintrag.kategorie}</span></p>
+                        <p><strong>Bewertung:</strong> ${eintrag.bewertung} / 10 ⭐</p>
+                        <p><strong>Erscheinungsjahr:</strong> ${eintrag.jahr}</p>
+                    `;
+                    listeEl.appendChild(karte);
+                });
+            }
+
+            // Freiwillig: Treffer-Anzahl anzeigen („3 von 5 Einträgen")
+            if (trefferEl) {
+                trefferEl.textContent = `${eintraege.length} von ${daten.length} Einträgen`;
+            }
+        }
+
+        // Live-Filter: Reagiere auf das input-Event des Suchfelds
+        sucheEl.addEventListener("input", (event) => {
+            const suchtext = event.target.value.toLowerCase().trim();
+            const gefiltert = daten.filter(e => e.titel.toLowerCase().includes(suchtext));
+            zeigeListe(gefiltert);
+        });
+
+        // Rohdaten anzeigen: Formatiertes JSON in <pre id="rohdaten"> schreiben
+        rohdatenEl.textContent = JSON.stringify(daten, null, 2);
+
+        // Beim Laden der Seite einmal initial aufrufen
+        zeigeListe(daten);
+    </script>
+</body>
+</html>
